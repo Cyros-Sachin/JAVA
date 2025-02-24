@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class sixtynine {
+public class seventyone {
     Node head;
 
     class Node {
@@ -110,8 +110,65 @@ public class sixtynine {
         return newHead;
     }
 
+    public void removefromlast(int n) {
+        Node currNode = head;
+        int count = 1;
+        while (count != n) {
+            currNode = currNode.next;
+            count++;
+        }
+        removenode(currNode);
+    }
+
+    public Node findmiddle(Node head) {
+        if (head==null || head.next==null ) {
+            return head;
+        }
+        Node hare = head;
+        Node turtle = head;
+        while ( hare.next!=null && hare.next.next != null ) {
+            hare = hare.next.next;
+            turtle = turtle.next;
+        }
+        return turtle;
+    }
+
+    public Node reverse_part(Node parthead) {
+        Node prev = null;
+        Node curr = parthead;
+        while (curr != null) {
+            Node next = curr.next;
+            curr.next=prev;
+            prev=curr;
+            curr=next;
+        }
+
+        return prev;
+        
+    }
+
+    public void checkpalindrome() {
+        if (head == null || head.next == null) {
+            System.out.println("\nPalindrome");
+            return;
+        }
+        Node middleNode = findmiddle(head);
+        Node lasthalf = reverse_part(middleNode.next);
+        Node currNode = head;
+        while (lasthalf != null) {
+            if (currNode.info != lasthalf.info) {
+                System.out.println("\nNot Palindrome");
+                return;
+            }
+            lasthalf = lasthalf.next;
+            currNode = currNode.next;
+        }
+        System.out.println("\nPalindrome");
+        return;
+    }
+
     public static void main(String[] args) {
-        sixtynine list = new sixtynine();
+        seventyone list = new seventyone();
         Scanner sc = new Scanner(System.in);
         System.out.println("\nEnter the Size of linked list: ");
         int size = sc.nextInt();
@@ -122,8 +179,6 @@ public class sixtynine {
         }
         list.printlist();
 
-        System.out.println("\n List after reversing :");
-        list.head = list.reverse_recursion(list.head);
-        list.printlist();
+        list.checkpalindrome();
     }
 }

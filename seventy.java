@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class sixtynine {
+public class seventy {
     Node head;
 
     class Node {
@@ -109,9 +109,18 @@ public class sixtynine {
         head.next = null;
         return newHead;
     }
+    public void removefromlast(int n){
+        Node currNode = head;
+        int count=1;
+        while (count!=n) {
+            currNode=currNode.next;
+            count++;
+        }
+        removenode(currNode);
+    }
 
     public static void main(String[] args) {
-        sixtynine list = new sixtynine();
+        seventy list = new seventy();
         Scanner sc = new Scanner(System.in);
         System.out.println("\nEnter the Size of linked list: ");
         int size = sc.nextInt();
@@ -122,8 +131,9 @@ public class sixtynine {
         }
         list.printlist();
 
-        System.out.println("\n List after reversing :");
-        list.head = list.reverse_recursion(list.head);
+        System.out.println("\n Enter the value of n to be deleted from last :");
+        int n = sc.nextInt();
+        list.removefromlast(size-n+1);
         list.printlist();
     }
 }

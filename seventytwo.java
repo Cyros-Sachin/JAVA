@@ -1,20 +1,26 @@
 import java.util.Scanner;
 
-public class sixtynine {
+public class seventytwo {
     Node head;
 
     class Node {
         int info;
         Node next;
 
-        Node(int info) {
-            this.info = info;
-            this.next = null;
+        Node(int info, boolean status) {
+            if (status) {
+                this.info = info;
+                this.next = head;
+            }else{
+                this.info = info;
+                this.next = null;
+            }
+
         }
     }
 
-    public void additem(int info) {
-        Node newNode = new Node(info);
+    public void additem(int info, int i, boolean last) {
+        Node newNode = new Node(info, last);
         if (head == null) {
             head = newNode;
             return;
@@ -33,11 +39,11 @@ public class sixtynine {
 
     public void printlist() {
         Node curr = head;
-        while (curr != null) {
+        do {
             System.out.print(curr.info + "->");
             curr = curr.next;
-        }
-        System.out.print("NULL");
+        } while (curr != head);
+        System.out.print(curr.info);
     }
 
     public void search(int info) {
@@ -110,20 +116,94 @@ public class sixtynine {
         return newHead;
     }
 
+    public void removefromlast(int n) {
+        Node currNode = head;
+        int count = 1;
+        while (count != n) {
+            currNode = currNode.next;
+            count++;
+        }
+        removenode(currNode);
+    }
+
+    public Node findmiddle(Node head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        Node hare = head;
+        Node turtle = head;
+        while (hare.next != null && hare.next.next != null) {
+            hare = hare.next.next;
+            turtle = turtle.next;
+        }
+        return turtle;
+    }
+
+    public Node reverse_part(Node parthead) {
+        Node prev = null;
+        Node curr = parthead;
+        while (curr != null) {
+            Node next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+
+        return prev;
+
+    }
+
+    public void checkpalindrome() {
+        if (head == null || head.next == null) {
+            System.out.println("\nPalindrome");
+            return;
+        }
+        Node middleNode = findmiddle(head);
+        Node lasthalf = reverse_part(middleNode.next);
+        Node currNode = head;
+        while (lasthalf != null) {
+            if (currNode.info != lasthalf.info) {
+                System.out.println("\nNot Palindrome");
+                return;
+            }
+            lasthalf = lasthalf.next;
+            currNode = currNode.next;
+        }
+        System.out.println("\nPalindrome");
+        return;
+    }
+
+    public void checkloop(){
+        Node turtle = head;
+        Node hare = head;
+        do {
+            turtle=turtle.next;
+            hare=hare.next.next;
+            if (hare.next==null || hare.next.next==null) {
+                System.out.println("No loop");
+                return;
+            }
+        } while (turtle!=hare);
+        
+        System.out.println("\nLoop found in the linked list!!");
+    }
     public static void main(String[] args) {
-        sixtynine list = new sixtynine();
+        seventytwo list = new seventytwo();
         Scanner sc = new Scanner(System.in);
         System.out.println("\nEnter the Size of linked list: ");
         int size = sc.nextInt();
         for (int i = 1; i <= size; i++) {
             System.out.print("Enter data" + i + ": ");
             int info = sc.nextInt();
-            list.additem(info);
+            if (i != size) {
+                list.additem(info, i, false);
+                continue;
+            }
+            list.additem(info, size, true);
+
         }
         list.printlist();
 
-        System.out.println("\n List after reversing :");
-        list.head = list.reverse_recursion(list.head);
-        list.printlist();
+        list.checkloop();
     }
 }
